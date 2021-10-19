@@ -1,16 +1,16 @@
 import sys
 
-def is_prime(num):
+def is_prime(number):
     try:
-        num = int(num)
+        number = int(number)
     except:
         return False
 
-    if num < 1:
+    if number < 2:
         return False
 
-    for i in range(2, num//2 + 1):
-        if num % i == 0:
+    for i in range(2, number//2 + 1):
+        if number % i == 0:
             return False
     return True
 

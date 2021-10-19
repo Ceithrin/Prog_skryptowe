@@ -1,26 +1,23 @@
 import books
 import unittest
+import argparse
+import sys
 
 
 class Test_TestSum(unittest.TestCase):
-    def test_list_int_int(self):
-        self.assertEqual(books.list({1: 2}), "1 2")
-
-    # def test_sum_integer_float(self):
-    #     self.assertEqual(main.sum(2, 1.5), 3.5)
-
-    # def test_sum_integer_string(self):
-    #    self.assertEqual(main.sum(2, '2'), 4)
-
-    # def test_sum_string_string(self):
-    #     self.assertEqual(main.sum('2.1', '2.0'), 4.1)
-
-    # def test_sum_integer_wrong_number_in_string(self):
-    #     self.assertRaises(TypeError,main.sum(2, 'Ala ma kota123'))
-
-    # def test_sum_integer_list(self):
-    #     self.assertRaises(TypeError,main. sum(1, [2, 3]))
+    def test_warning(self):
+        with unittest.mock.patch(sys.argv, ["books.py", "Ksiazka:3", "Ksiazka2:4"]):
+            for arg in books:
+                print(arg, books[arg])
+            self.assertWarns(UserWarning)
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--input', default='Ksiazka:2')
+    parser.add_argument('unittest_args', nargs='*')
+
+    args = parser.parse_args()
+
+    sys.argv[1:] = args.unittest_args
     unittest.main()
