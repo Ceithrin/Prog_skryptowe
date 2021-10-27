@@ -13,12 +13,14 @@ class Term():
     def earlierThan(self, termin):
         if self.__day.difference(termin._Term__day) < 0:
             return False
-        if termin.hour < self.hour:
-            return False
-        if termin.hour == self.hour and termin.minute <= self.minute:
-            return False
-        else:
-            return True
+        if self.__day.difference(termin._Term__day) == 0:
+            if termin.hour < self.hour:
+                return False
+            if termin.hour == self.hour and termin.minute <= self.minute:
+                return False
+            else:
+                return True
+        return True
 
     def laterThan(self, termin):
         if self.__day.difference(termin._Term__day) > 0:

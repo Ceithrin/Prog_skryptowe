@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import no_type_check_decorator
+
 
 class Day(Enum):
     MON = 1
@@ -53,5 +53,6 @@ def nthDayFrom(n, day):
     else:
         return Day(nthDay)
 
-result = Day.MON.difference(Day.SUN)
-print(result)
+if __name__ == "__main__":
+    result = Day.MON.difference(Day.SUN)
+    print(result)
