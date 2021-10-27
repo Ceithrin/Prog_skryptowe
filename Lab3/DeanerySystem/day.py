@@ -10,6 +10,24 @@ class Day(Enum):
     SAT = 6
     SUN = 7
 
+    def __str__(self):
+        if self.value == 1:
+            day_name = 'Poniedziałek'
+        elif self.value == 2:
+            day_name = 'Wtorek'
+        elif self.value == 3:
+            day_name = 'Środa'
+        elif self.value == 4:
+            day_name = 'Czwartek'
+        elif self.value == 5:
+            day_name = 'Piątek'
+        elif self.value == 6:
+            day_name = 'Sobota'
+        elif self.value == 7:
+            day_name = 'Niedziela'
+
+        return day_name
+
     def difference(self, day):
         # print(day.value)
         # print(self.value)
