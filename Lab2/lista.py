@@ -4,12 +4,12 @@ lista = []
 
 def zapisz(user_input):
     for inp in user_input:
-        found = False
+        flag = True
         for element in lista:
             if element[0] == inp:
                 element[1] += 1
-                found = True
-        if not found:
+                found = False
+        if flag:
             lista.append([inp, 1])
 
 
