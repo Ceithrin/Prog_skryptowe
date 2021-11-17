@@ -4,6 +4,7 @@ from day import Day
 from term import Term
 from lesson import Lesson
 from action import Action
+from teacher import Teacher
 
 
 class Timetable1(object):
@@ -113,8 +114,12 @@ class Timetable1(object):
             """
     
         if not self.busy(lesson.term):
-            self.lesson_list.append(lesson)
-            return True
+            lesson._Lesson__teacher.hours += lesson.term.duration / 45
+            if lesson._Lesson__teacher.hours > 6:
+                return False
+            else:
+                self.lesson_list.append(lesson)
+                return True
         return False
 
 
@@ -184,6 +189,19 @@ class Timetable1(object):
         line = '\n            ********************************************************************************************\n' #92 gwiazdki
         blank = '            *'
 
+        # term1 = Term(8, 0, Day.WED)
+        # term2 = Term(11, 30, Day.WED)
+        # term3 = Term(11, 30, Day.SAT)
+        
+        # leng = len(timetab)
+        # indextab[]
+        # for ind, lesson in enumerate(timetab):
+        #     for sec_lesson in timetab:
+        #         if lesson.hour == sec_lesson.hour and lesson.minute == sec_lesson.minute and lesson.duration == sec_lesson.duration:
+        #             leng -= 1
+        #             indextab[ind].append([timetab.index(sec_lesson.term) + 1, lesson.term])
+        #         else:
+        #             indextab[ind].append([timetab.index(lesson.term) + 1, lesson.term])
 
         for i in range(len(timetab) + 1):
             strtab.append([])

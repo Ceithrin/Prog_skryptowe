@@ -2,7 +2,7 @@ import re
 #-*-coding: utf-8-*-
 
 def word_match(string):
-    new_letters = re.search(r'[^\d|^\W|^\s]+', string)
+    new_letters = re.search(r'[a-zA-Ząężźćńóś]+', string)
     if new_letters:
         return (new_letters.start(), new_letters.group()) # zwraca indeks początku dopasowania i znalezione slowo
     else:
