@@ -44,7 +44,7 @@ class Term(BasicTerm):
             return True
 
     def equals(self, termin):
-        if termin.hour == self.__hour and termin.minute == self.__minute and termin.duration == self.__duration and self.__day.difference(termin.day) == 0:
+        if termin.hour == self.hour and termin.minute == self.minute and termin.duration == self.duration and self.__day.difference(termin.day) == 0:
             return True
         else:
             return False

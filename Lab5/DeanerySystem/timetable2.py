@@ -8,6 +8,7 @@ from basictimetable import BasicTimetable
 
 
 class Timetable2(BasicTimetable):
+    skipBreaks = False
     
     def __init__(self, breaks: List[Break]):
         self.breaks = breaks
@@ -37,6 +38,7 @@ class Timetable2(BasicTimetable):
         end_time = term.getEndTime()
         if end_time[0] > 20 or (end_time[0] == 20 and end_time[1] > 0):
             return False
+        
 
         if not self.busy(term): #jeśli termin nie zajęty
             # teraz sprawdzam warunki dla stacjo i nie i czy się zgadza nowy termin z trybem studiów
@@ -55,7 +57,21 @@ class Timetable2(BasicTimetable):
         return False
 
 
-
+    def overlapsBreak(self, term: Term) -> bool:
+        ts = term.getStartTime()
+        te = term.getEndTime()
+        for bre in self.breaks:
+            bs = bre.term.getStartTime()
+            be = bre.term.getEndTime()
+            if ts > bs and ts < be:
+                return (True, bre.term.duration)
+            if te > bs and te < be:
+                return (True, bre.term.duration)
+            if ts == bs and te > be:
+                return (True, bre.term.duration)
+            if ts < bs and te == be:
+                return (True, bre.term.duration)
+        return False
  
 ##########################################################
 
@@ -75,7 +91,10 @@ class Timetable2(BasicTimetable):
             **True** if the term is busy
         """
         # Term = hour, minute, day, duration=90
-        for lesson in self.lesson_list:
+        if self.overlapsBreak(term):
+            return True
+
+        for lesson in list(self.lesson_dict.values()):
             if lesson.term == term:
                 return True
             if lesson.term.day == term.day:
@@ -100,10 +119,14 @@ class Timetable2(BasicTimetable):
         
         strtab = []
         timetab = []
-        for lesson in self.lesson_list:
-            timetab.append(lesson.term)
+        for lesson in list(self.lesson_dict.values()):
+            timetab.append(lesson.term) # z day
+        
+        for bre in self.breaks:
+            timetab.append(bre.term)  # bez day
+
         timetab = sorted(timetab, key=lambda t: t.printStartTime())
-        diff_hours = len(timetab) # ile będzie pól z godzinami
+        
         #mam juz posortowane terminy
         line = '\n            ********************************************************************************************\n' #92 gwiazdki
         blank = '            *'
@@ -119,8 +142,12 @@ class Timetable2(BasicTimetable):
         for counter, element in enumerate(timetab):
             strtab[counter + 1][0] = f'{element.printStartTime(): >5}-{element.printEndTime(): <6}*'
 
-        for lesson in self.lesson_list:
+        for lesson in list(self.lesson_dict.values()):
             strtab[timetab.index(lesson.term) + 1][lesson.term.day.value] = f'{lesson.name: ^12}*'
+
+        for bre in self.breaks:
+            for i in range(1, 8):
+                strtab[timetab.index(bre.term) + 1][i] = f'-------------'
 
         string = ''
         for i in range(len(timetab) + 1):

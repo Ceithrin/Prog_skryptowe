@@ -29,11 +29,7 @@ class Lesson():
 
     @timetable.setter
     def timetable(self, value):
-        from timetable1 import Timetable1
-        if type(value) is not Timetable1:
-            raise TypeError('timetable musi być typu \'Timetable1\'')
-        else:
-            self.__timetable = value
+        self.__timetable = value
 
     @property
     def term(self):
@@ -123,6 +119,23 @@ class Lesson():
         
         new_term = Term(self.__term.hour - hour_diff, self.__term.minute - minute_diff, self.__term.day)
 
+        if hasattr(self.timetable, 'breaks'):
+            if not self.timetable.skipBreaks:
+                flag = self.timetable.overlapsBreak(new_term)
+                if flag:
+                    return False
+            else:
+                flag = self.timetable.overlapsBreak(new_term)
+                if flag:
+                    hour_diff += flag[1] // 60 #flag[1] czas trwania przerwy
+                    minute_diff += flag[1] % 60
+
+                    if self.__term.minute - minute_diff < 0:
+                        minute_diff -= 60
+                        hour_diff += 1
+
+                    new_term = Term(self.__term.hour - hour_diff, self.__term.minute - minute_diff, self.__term.day)
+ 
         if not self.timetable.can_be_transferred_to(new_term, self.full_time):
             return False
 
@@ -140,6 +153,23 @@ class Lesson():
         
         new_term = Term(self.__term.hour + hour_diff, self.__term.minute + minute_diff, self.__term.day)
 
+        if hasattr(self.timetable, 'breaks'):
+            if not self.timetable.skipBreaks:
+                flag = self.timetable.overlapsBreak(new_term)
+                if flag:
+                    return False
+            else:
+                flag = self.timetable.overlapsBreak(new_term)
+                if flag:
+                    hour_diff += flag[1] // 60 #flag[1] czas trwania przerwy
+                    minute_diff += flag[1] % 60
+
+                    if self.__term.minute - minute_diff < 0:
+                        minute_diff -= 60
+                        hour_diff += 1
+
+                    new_term = Term(self.__term.hour - hour_diff, self.__term.minute - minute_diff, self.__term.day)
+ 
         if not self.timetable.can_be_transferred_to(new_term, self.full_time):
             return False
 
