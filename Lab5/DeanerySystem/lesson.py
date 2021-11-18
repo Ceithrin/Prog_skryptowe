@@ -145,6 +145,7 @@ class Lesson():
 
 
     def laterTime(self):
+
         hour_diff = self.term.duration // 60
         minute_diff = self.term.duration % 60
         if self.__term.minute + minute_diff >= 60:
@@ -163,16 +164,12 @@ class Lesson():
                 if flag:
                     hour_diff += flag[1] // 60 #flag[1] czas trwania przerwy
                     minute_diff += flag[1] % 60
-
-                    if self.__term.minute - minute_diff < 0:
+                    if self.__term.minute + minute_diff >= 60:
                         minute_diff -= 60
                         hour_diff += 1
-
-                    new_term = Term(self.__term.hour - hour_diff, self.__term.minute - minute_diff, self.__term.day)
- 
+                    new_term = Term(self.__term.hour + hour_diff, self.__term.minute + minute_diff, self.__term.day)
         if not self.timetable.can_be_transferred_to(new_term, self.full_time):
             return False
-
         self.__term.hour += hour_diff
         self.__term.minute += minute_diff
         return True

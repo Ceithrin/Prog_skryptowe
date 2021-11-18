@@ -10,7 +10,7 @@ from basictimetable import BasicTimetable
 class Timetable2(BasicTimetable):
     skipBreaks = False
     
-    def __init__(self, breaks: List[Break]):
+    def __init__(self, breaks = []):
         self.breaks = breaks
         super().__init__()
     """ Class containing a set of operations to manage the timetable """
