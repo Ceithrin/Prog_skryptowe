@@ -3,12 +3,15 @@ from day import Day
 from term import Term
 from lesson import Lesson
 from action import Action
+from break1 import Break
 from basictimetable import BasicTimetable
 
 
-class Timetable1(BasicTimetable):
+class Timetable2(BasicTimetable):
+    skipBreaks = False
     
-    def __init__(self):
+    def __init__(self, breaks = []):
+        self.breaks = breaks
         super().__init__()
     """ Class containing a set of operations to manage the timetable """
 
@@ -35,6 +38,7 @@ class Timetable1(BasicTimetable):
         end_time = term.getEndTime()
         if end_time[0] > 20 or (end_time[0] == 20 and end_time[1] > 0):
             return False
+        
 
         if not self.busy(term): #jeśli termin nie zajęty
             # teraz sprawdzam warunki dla stacjo i nie i czy się zgadza nowy termin z trybem studiów
@@ -53,7 +57,21 @@ class Timetable1(BasicTimetable):
         return False
 
 
-
+    def overlapsBreak(self, term: Term) -> bool:
+        termin_start = term.getStartTime()
+        termin_end = term.getEndTime()
+        for bre in self.breaks:
+            break_start = bre.term.getStartTime()
+            break_end = bre.term.getEndTime()
+            if  termin_start > break_start and termin_start < break_end:
+                return (True, bre.term.duration)
+            if termin_end > break_start and termin_end < break_end:
+                return (True, bre.term.duration)
+            if  termin_start == break_start and termin_end > break_end:
+                return (True, bre.term.duration)
+            if  termin_start < break_start and termin_end == break_end:
+                return (True, bre.term.duration)
+        return False
  
 ##########################################################
 
@@ -73,6 +91,9 @@ class Timetable1(BasicTimetable):
             **True** if the term is busy
         """
         # Term = hour, minute, day, duration=90
+        if self.overlapsBreak(term):
+            return True
+
         for lesson in list(self.lesson_dict.values()):
             if lesson.term == term:
                 return True
@@ -99,9 +120,13 @@ class Timetable1(BasicTimetable):
         strtab = []
         timetab = []
         for lesson in list(self.lesson_dict.values()):
-            timetab.append(lesson.term)
+            timetab.append(lesson.term) # z day
+        
+        for bre in self.breaks:
+            timetab.append(bre.term)  # bez day
+
         timetab = sorted(timetab, key=lambda t: t.printStartTime())
-        diff_hours = len(timetab) # ile będzie pól z godzinami
+        
         #mam juz posortowane terminy
         line = '\n            ********************************************************************************************\n' #92 gwiazdki
         blank = '            *'
@@ -119,6 +144,10 @@ class Timetable1(BasicTimetable):
 
         for lesson in list(self.lesson_dict.values()):
             strtab[timetab.index(lesson.term) + 1][lesson.term.day.value] = f'{lesson.name: ^12}*'
+
+        for bre in self.breaks:
+            for i in range(1, 8):
+                strtab[timetab.index(bre.term) + 1][i] = f'-------------'
 
         string = ''
         for i in range(len(timetab) + 1):
