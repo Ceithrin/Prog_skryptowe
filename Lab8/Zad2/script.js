@@ -68,16 +68,10 @@ while (true){
     var a = cyfry(inp);
     var b = litery(inp);
     suma(inp);
-    // window.alert(a + " " + b + " " + calkowita_suma);
     var out = document.getElementById("output");
-    // var textToAdd = document.createTextNode(
-    //     "\n" + "\t<p style='color:red;'>" + a + "</p>" +
-    //     "\t<p style='color:green;'>" + b + "</p>" + 
-    //     "\t<p style='color:blue;'>" + calkowita_suma + "</p>\n"
-    // );
-    // out.appendChild(textToAdd);
+
     out.innerHTML += inp + "<br>" + "&emsp;<p style='color:red;'>" + a + "</p>" +
         "&emsp;<p style='color:green;'>" + b + "</p>" + 
         "&emsp;<p style='color:blue;'>" + final_sum + "</p>" + "<br>";
-    // out.innerHTML += "\n"
+
 }
