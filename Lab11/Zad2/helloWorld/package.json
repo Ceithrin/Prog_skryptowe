@@ -1,0 +1,19 @@
+{
+  "name": "helloworld",
+  "version": "1.0.0",
+  "description": "The \"Hello world\" app",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx mocha",
+    "start": "node app2",
+    "app1": "echo Uruchamiam aplikację nr 1 && node app1",
+    "app2": "echo Uruchamiam aplikację nr 2 && node app2"
+  },
+  "author": "Julia Z",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2",
+    "morgan": "^1.10.0",
+    "pug": "^3.0.2"
+  }
+}
