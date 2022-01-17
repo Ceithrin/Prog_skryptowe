@@ -19,7 +19,7 @@ app.use(logger('dev'));                         // Add an HTTP request recorder 
 
 // Route definitions
 app.get('/', function (req, res) {      // The first route
-    res.render('index', { sum: sum(x, y) }); // Render the 'index' view in 'pretty' mode — the resulting HTML code will be indented — the 'pretty' option has the 'deprecated' status — in the future it will not be supported
+    res.render('index', { x: x, y: y, operation: "+", result: x+y }); // Render the 'index' view in 'pretty' mode — the resulting HTML code will be indented — the 'pretty' option has the 'deprecated' status — in the future it will not be supported
     //res.render('index '); // Render the 'index' view; because the 'pretty' mode is, by default, turned off so the resulting HTML will be without indentation
 });
 
