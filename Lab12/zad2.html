@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date</title>
+    <script>
+        function getDate() {
+            document.getElementById('remote').textContent = "Downloading data"
+            fetch(`http://worldtimeapi.org/api/timezone/${encodeURI(document.getElementById('area').value)}/${encodeURI(document.getElementById('location').value)}`)
+                .then(response => {
+                    if (!response.ok) { 
+                        throw Error(response.statusText) 
+                    }
+                    if (response.headers.get('Content-Type') === 'text/html; charset=utf-8') {
+                        document.getElementById('remote').textContent = "The server is overloaded"
+                        throw Error(response.statusText)
+                    }
+                    return response.json()
+                })
+                .then(data => {
+                    let date = new Date(Date.parse(data.datetime))
+                    var date_dmy = date.toLocaleDateString()
+                    var date_hms = date.toLocaleTimeString()
+                    document.getElementById('remote').textContent = `${date_dmy} ${date_hms}`
+                })        
+        }
+    </script>
+</head>
+<body>
+    <h1>Remote</h1>
+    <div id='remote'>
+        Remote date and time
+    </div>
+    <!-- ***************** -->
+    <h1>Local</h1>
+    <div id='local'>
+        Local date and time
+    </div>
+
+    <form>
+        <input type="text" id="area" name="area" placeholder='Europe'>
+        <input type="text" id="location" name="location" placeholder='London'>
+        <input type="button" value="Pobierz" onclick="getDate()">
+    </form>
+</body>
+
+</html>
